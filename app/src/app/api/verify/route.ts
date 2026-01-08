@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
-import OpenAI from 'openai'
+import { GoogleGenerativeAI } from '@google/generative-ai'
 
 export async function POST(req: NextRequest) {
-  const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+  const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '')
+  const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' })
+
   const { tweetContent, rules } = await req.json()
 
   const prompt = `You are an AI verification agent for creator-brand agreements.
@@ -16,23 +18,22 @@ CAMPAIGN RULES:
 - Required hashtags: ${rules.hashtags.join(', ')}
 - Required mentions: ${rules.mentions.join(', ')}
 
-Respond in JSON format:
+Respond ONLY with valid JSON (no markdown):
 {
   "verified": boolean,
   "hashtag_check": boolean,
   "mention_check": boolean,
   "content_relevant": boolean,
-  "confidence": number (0-1),
+  "confidence": number between 0 and 1,
   "reasoning": "brief explanation"
 }`
 
-  const response = await openai.chat.completions.create({
-    model: 'gpt-4o-mini',
-    messages: [{ role: 'user', content: prompt }],
-    response_format: { type: 'json_object' },
-  })
-
-  const result = JSON.parse(response.choices[0].message.content || '{}')
+  const result = await model.generateContent(prompt)
+  const text = result.response.text()
   
-  return NextResponse.json(result)
+  // Parse JSON from response
+  const jsonMatch = text.match(/\{[\s\S]*\}/)
+  const parsed = JSON.parse(jsonMatch?.[0] || '{}')
+  
+  return NextResponse.json(parsed)
 }
