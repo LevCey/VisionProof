@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { ConnectWallet } from './ConnectWallet'
 
 export function Header() {
@@ -8,11 +9,7 @@ export function Header() {
     <header className="border-b border-gray-800 bg-gray-950/80 backdrop-blur-xl sticky top-0 z-50">
       <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2 shrink-0">
-          <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-            <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
-          </div>
+          <Image src="/logo.png" alt="Logo" width={32} height={32} />
           <span className="text-lg font-bold text-white hidden sm:block">AI Payment Agent</span>
         </Link>
         <nav className="flex items-center gap-2 sm:gap-6">

@@ -69,51 +69,51 @@ export default function CreateAgreement() {
   }
 
   return (
-    <div className="max-w-xl mx-auto">
-      <h1 className="text-3xl font-bold mb-8">Create Agreement</h1>
+    <div className="max-w-2xl mx-auto">
+      <h1 className="text-3xl font-bold mb-8 text-white">Create Agreement</h1>
       
-      <div className="bg-gray-900 rounded-xl p-6 space-y-6">
+      <div className="bg-gray-900/80 rounded-xl p-6 space-y-6 border border-gray-800">
         <div>
-          <label className="block text-sm text-gray-400 mb-2">Creator Wallet Address</label>
+          <label className="block text-sm text-gray-300 mb-2">Creator Wallet Address</label>
           <input
             type="text"
             value={creator}
             onChange={(e) => setCreator(e.target.value)}
             placeholder="0x..."
-            className="w-full bg-gray-800 rounded-lg px-4 py-3 text-white"
+            className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white placeholder-gray-500"
           />
         </div>
 
         <div>
-          <label className="block text-sm text-gray-400 mb-2">MNEE Amount</label>
+          <label className="block text-sm text-gray-300 mb-2">MNEE Amount</label>
           <input
             type="number"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
             placeholder="100"
-            className="w-full bg-gray-800 rounded-lg px-4 py-3 text-white"
+            className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white placeholder-gray-500"
           />
         </div>
 
         <div>
-          <label className="block text-sm text-gray-400 mb-2">Required Hashtags (comma separated)</label>
+          <label className="block text-sm text-gray-300 mb-2">Required Hashtags (comma separated)</label>
           <input
             type="text"
             value={hashtags}
             onChange={(e) => setHashtags(e.target.value)}
             placeholder="#MNEE, #crypto"
-            className="w-full bg-gray-800 rounded-lg px-4 py-3 text-white"
+            className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white placeholder-gray-500"
           />
         </div>
 
         <div>
-          <label className="block text-sm text-gray-400 mb-2">Required Mentions (comma separated)</label>
+          <label className="block text-sm text-gray-300 mb-2">Required Mentions (comma separated)</label>
           <input
             type="text"
             value={mentions}
             onChange={(e) => setMentions(e.target.value)}
             placeholder="@MNEE_io"
-            className="w-full bg-gray-800 rounded-lg px-4 py-3 text-white"
+            className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white placeholder-gray-500"
           />
         </div>
 
@@ -121,7 +121,7 @@ export default function CreateAgreement() {
           <button
             onClick={handleApprove}
             disabled={!creator || !amount}
-            className="w-full py-4 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-700 rounded-xl font-semibold"
+            className="w-full py-4 bg-blue-600 hover:bg-blue-500 disabled:bg-gray-600 disabled:text-gray-300 rounded-xl font-semibold text-white transition-colors"
           >
             Step 1: Approve MNEE
           </button>
@@ -136,7 +136,7 @@ export default function CreateAgreement() {
         {(step === 'approve' && approveSuccess) && (
           <button
             onClick={handleCreate}
-            className="w-full py-4 bg-green-600 hover:bg-green-700 rounded-xl font-semibold"
+            className="w-full py-4 bg-green-600 hover:bg-green-500 rounded-xl font-semibold text-white transition-colors"
           >
             Step 2: Create Agreement
           </button>

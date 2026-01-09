@@ -200,7 +200,7 @@ export default function Agreements() {
         <button
           onClick={verifyContent}
           disabled={!tweetContent || loading}
-          className="w-full py-4 bg-purple-600 hover:bg-purple-500 disabled:bg-gray-700 disabled:text-gray-500 rounded-xl font-semibold text-white transition-colors"
+          className="w-full py-4 bg-purple-600 hover:bg-purple-500 disabled:bg-gray-600 disabled:text-gray-300 rounded-xl font-semibold text-white transition-colors"
         >
           {loading ? 'Verifying...' : 'Verify with AI'}
         </button>
