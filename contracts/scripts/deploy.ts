@@ -1,8 +1,8 @@
 import { ethers } from "hardhat";
 
 async function main() {
-  // MNEE contract address on Ethereum Mainnet
-  const MNEE_ADDRESS = "0x8ccedbAe4916b79da7F3F612EfB2EB93A2bFB6cF";
+  // MNEE contract address on Ethereum Mainnet (checksum corrected)
+  const MNEE_ADDRESS = "0x8ccedbAe4916b79da7F3F612EfB2EB93A2bFD6cF";
   
   const CreatorEscrow = await ethers.getContractFactory("CreatorEscrow");
   const escrow = await CreatorEscrow.deploy(MNEE_ADDRESS);
