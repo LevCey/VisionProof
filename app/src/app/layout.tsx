@@ -17,8 +17,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={`${geist.className} bg-gray-950 text-white min-h-screen`}>
+    <html lang="en" className="overflow-x-hidden">
+      <body className={`${geist.className} bg-gray-950 text-white min-h-screen overflow-x-hidden`}>
         <Providers>
           <div className="min-h-screen bg-gray-950">
             <div className="bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-gray-900 via-gray-950 to-black min-h-screen">
