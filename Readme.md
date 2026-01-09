@@ -15,7 +15,7 @@ An autonomous AI agent that verifies creator deliverables and triggers MNEE paym
 
 1. **Brand** locks MNEE in escrow + defines campaign rules
 2. **Creator** delivers content (tweets)
-3. **AI Agent** verifies delivery against rules using GPT-4
+3. **AI Agent** verifies delivery against rules using Gemini
 4. **Smart Contract** releases funds automatically
 
 ✅ No trust required  
@@ -42,8 +42,8 @@ MNEE is not just a payment rail — it's **programmable money**:
 
 ```
 ┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│   Next.js   │────▶│  AI Agent   │────▶│   OpenAI    │
-│   Frontend  │     │   (API)     │     │   GPT-4     │
+│   Next.js   │────▶│  AI Agent   │────▶│   Gemini    │
+│   Frontend  │     │   (API)     │     │   2.5 Flash │
 └─────────────┘     └─────────────┘     └─────────────┘
        │                   │
        ▼                   ▼
@@ -63,9 +63,10 @@ MNEE is not just a payment rail — it's **programmable money**:
 
 - **Frontend:** Next.js 14, TypeScript, Tailwind CSS
 - **Wallet:** wagmi, viem
-- **AI:** OpenAI GPT-4
-- **Blockchain:** Ethereum, Solidity
-- **Stablecoin:** MNEE (0x8ccedbAe4916b79da7F3F612EfB2EB93A2bFB6cF)
+- **AI:** Google Gemini 2.5 Flash Lite
+- **Blockchain:** Ethereum Sepolia
+- **Stablecoin:** MNEE (0x8ccedbAe4916b79da7F3F612EfB2EB93A2bFD6cF)
+- **Contract:** 0xeB11F18533775A9B6Dc251E94a4eDe7e5b3d6240
 
 ## Quickstart
 
@@ -75,7 +76,7 @@ cd app && pnpm install
 
 # Set environment variables
 cp .env.example .env.local
-# Add your OPENAI_API_KEY and NEXT_PUBLIC_ESCROW_ADDRESS
+# Add your GEMINI_API_KEY
 
 # Run development server
 pnpm dev
@@ -97,20 +98,27 @@ npx hardhat run scripts/deploy.ts --network sepolia
 1. **Create Agreement:** Brand connects wallet, enters creator address, MNEE amount, and campaign rules (hashtags, mentions)
 2. **Lock Funds:** Brand approves MNEE and creates agreement - funds locked in escrow
 3. **Deliver Content:** Creator posts tweet with required hashtags/mentions
-4. **AI Verification:** System fetches tweet, GPT-4 verifies against rules
+4. **AI Verification:** System fetches tweet, Gemini verifies against rules
 5. **Auto Release:** If verified, proof submitted on-chain, funds released to creator
 
 ## Roadmap
 
-**Next 2 weeks:**
-- Multi-platform support (Instagram, YouTube)
-- Oracle decentralization
-- Dispute arbitration system
+### ✅ Completed (v1.0)
+- Trustless escrow with MNEE stablecoin
+- AI verification via Google Gemini
+- Twitter/X platform support
+- Creator reputation tracking on-chain
 
-**Next 2 months:**
-- SDK for easy integration
+### 🚧 In Progress (v1.1)
+- Multi-platform support (Instagram, TikTok, YouTube)
+- Instant Cash (Factoring) - 95% advance on pending payments
+
+### 📋 Planned (v2.0)
+- Decentralized oracle network for verification
+- Dispute arbitration with staking
+- SDK for brand integrations
 - Mobile app
-- Multi-chain deployment
+- Multi-chain deployment (Base, Polygon)
 
 ## Team
 

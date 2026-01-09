@@ -19,6 +19,10 @@ contract CreatorEscrow {
     IERC20 public immutable mnee;
     uint256 public agreementCount;
     mapping(uint256 => Agreement) public agreements;
+    
+    // Reputation tracking
+    mapping(address => uint256) public creatorCompletedCount;
+    mapping(address => uint256) public creatorTotalEarnings;
 
     uint256 public constant DISPUTE_TIMEOUT = 3 days;
 
@@ -69,6 +73,8 @@ contract CreatorEscrow {
         );
 
         a.state = State.RELEASED;
+        creatorCompletedCount[a.creator]++;
+        creatorTotalEarnings[a.creator] += a.amount;
         require(mnee.transfer(a.creator, a.amount), "Transfer failed");
         
         emit FundsReleased(id);
@@ -87,11 +93,12 @@ contract CreatorEscrow {
     function resolveDispute(uint256 id, bool releaseToCreator) external {
         Agreement storage a = agreements[id];
         require(a.state == State.DISPUTED, "Not disputed");
-        // In MVP: only brand can resolve. In production: use arbitration
         require(msg.sender == a.brand, "Only brand");
 
         if (releaseToCreator) {
             a.state = State.RELEASED;
+            creatorCompletedCount[a.creator]++;
+            creatorTotalEarnings[a.creator] += a.amount;
             require(mnee.transfer(a.creator, a.amount), "Transfer failed");
             emit FundsReleased(id);
         } else {
@@ -103,5 +110,9 @@ contract CreatorEscrow {
 
     function getAgreement(uint256 id) external view returns (Agreement memory) {
         return agreements[id];
+    }
+    
+    function getCreatorReputation(address creator) external view returns (uint256 completed, uint256 earnings) {
+        return (creatorCompletedCount[creator], creatorTotalEarnings[creator]);
     }
 }
