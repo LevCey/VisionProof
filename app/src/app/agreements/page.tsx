@@ -1,8 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { useAccount, useWriteContract, useWaitForTransactionReceipt } from 'wagmi'
-import { keccak256, toBytes } from 'viem'
+import { useAccount, useWriteContract, useWaitForTransactionReceipt, useReadContract } from 'wagmi'
+import { keccak256, toBytes, formatUnits } from 'viem'
 import CreatorEscrowABI from '@/config/CreatorEscrowABI.json'
 
 const ESCROW_ADDRESS = process.env.NEXT_PUBLIC_ESCROW_ADDRESS as `0x${string}` || '0x0000000000000000000000000000000000000000'
@@ -17,7 +17,7 @@ interface VerificationResult {
 }
 
 export default function Agreements() {
-  const { isConnected } = useAccount()
+  const { address, isConnected } = useAccount()
   const [agreementId, setAgreementId] = useState('')
   const [tweetUrl, setTweetUrl] = useState('')
   const [tweetContent, setTweetContent] = useState('')
@@ -28,6 +28,14 @@ export default function Agreements() {
 
   const { writeContract, data: txHash } = useWriteContract()
   const { isSuccess } = useWaitForTransactionReceipt({ hash: txHash })
+
+  // Fetch creator reputation
+  const { data: reputation } = useReadContract({
+    address: ESCROW_ADDRESS,
+    abi: CreatorEscrowABI,
+    functionName: 'getCreatorReputation',
+    args: address ? [address] : undefined,
+  }) as { data: [bigint, bigint] | undefined }
 
   const fetchTweet = async () => {
     setLoading(true)
@@ -103,34 +111,54 @@ export default function Agreements() {
 
   return (
     <div className="max-w-2xl mx-auto">
-      <h1 className="text-3xl font-bold mb-8">Verify & Release Payment</h1>
+      <h1 className="text-3xl font-bold mb-8 text-white">Verify & Release Payment</h1>
 
-      <div className="bg-gray-900 rounded-xl p-6 space-y-6">
+      {/* Creator Reputation Badge */}
+      {reputation && (
+        <div className="mb-6 p-4 bg-gradient-to-r from-purple-900/30 to-blue-900/30 rounded-xl border border-purple-800/30">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 bg-purple-500/20 rounded-full flex items-center justify-center">
+              <svg className="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+              </svg>
+            </div>
+            <div>
+              <p className="text-sm text-gray-400">Your Creator Reputation</p>
+              <div className="flex items-center gap-4">
+                <span className="text-white font-semibold">{reputation[0].toString()} deals completed</span>
+                <span className="text-green-400 font-semibold">{parseFloat(formatUnits(reputation[1], 18)).toFixed(2)} MNEE earned</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div className="bg-gray-900/80 rounded-xl p-6 space-y-6 border border-gray-800">
         <div>
-          <label className="block text-sm text-gray-400 mb-2">Agreement ID</label>
+          <label className="block text-sm text-gray-300 mb-2">Agreement ID</label>
           <input
             type="number"
             value={agreementId}
             onChange={(e) => setAgreementId(e.target.value)}
             placeholder="0"
-            className="w-full bg-gray-800 rounded-lg px-4 py-3 text-white"
+            className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white placeholder-gray-500"
           />
         </div>
 
         <div>
-          <label className="block text-sm text-gray-400 mb-2">Tweet URL</label>
+          <label className="block text-sm text-gray-300 mb-2">Tweet URL</label>
           <div className="flex gap-2">
             <input
               type="text"
               value={tweetUrl}
               onChange={(e) => setTweetUrl(e.target.value)}
               placeholder="https://twitter.com/user/status/123..."
-              className="flex-1 bg-gray-800 rounded-lg px-4 py-3 text-white"
+              className="flex-1 bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white placeholder-gray-500"
             />
             <button
               onClick={fetchTweet}
               disabled={loading}
-              className="px-4 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg"
+              className="px-4 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg text-white font-medium"
             >
               Fetch
             </button>
@@ -138,33 +166,33 @@ export default function Agreements() {
         </div>
 
         <div>
-          <label className="block text-sm text-gray-400 mb-2">Tweet Content (paste manually if fetch fails)</label>
+          <label className="block text-sm text-gray-300 mb-2">Tweet Content (paste manually if fetch fails)</label>
           <textarea
             value={tweetContent}
             onChange={(e) => setTweetContent(e.target.value)}
             rows={4}
-            className="w-full bg-gray-800 rounded-lg px-4 py-3 text-white"
+            className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white placeholder-gray-500"
             placeholder="Paste tweet content here..."
           />
         </div>
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm text-gray-400 mb-2">Required Hashtags</label>
+            <label className="block text-sm text-gray-300 mb-2">Required Hashtags</label>
             <input
               type="text"
               value={hashtags}
               onChange={(e) => setHashtags(e.target.value)}
-              className="w-full bg-gray-800 rounded-lg px-4 py-3 text-white"
+              className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white"
             />
           </div>
           <div>
-            <label className="block text-sm text-gray-400 mb-2">Required Mentions</label>
+            <label className="block text-sm text-gray-300 mb-2">Required Mentions</label>
             <input
               type="text"
               value={mentions}
               onChange={(e) => setMentions(e.target.value)}
-              className="w-full bg-gray-800 rounded-lg px-4 py-3 text-white"
+              className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white"
             />
           </div>
         </div>
@@ -172,9 +200,9 @@ export default function Agreements() {
         <button
           onClick={verifyContent}
           disabled={!tweetContent || loading}
-          className="w-full py-4 bg-purple-600 hover:bg-purple-700 disabled:bg-gray-700 rounded-xl font-semibold"
+          className="w-full py-4 bg-purple-600 hover:bg-purple-500 disabled:bg-gray-700 disabled:text-gray-500 rounded-xl font-semibold text-white transition-colors"
         >
-          {loading ? '⏳ Verifying...' : '🤖 Verify with AI'}
+          {loading ? 'Verifying...' : 'Verify with AI'}
         </button>
 
         {verification && (
