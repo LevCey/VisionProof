@@ -26,7 +26,7 @@ export default function CreateAgreement() {
   const rulesHash = keccak256(toBytes(JSON.stringify({ hashtags: hashtags.split(','), mentions: mentions.split(',') })))
 
   const handleApprove = () => {
-    const amountWei = parseUnits(amount, 6) // MNEE has 6 decimals
+    const amountWei = parseUnits(amount, 18) // MNEE has 18 decimals
     approve({
       address: MNEE_ADDRESS,
       abi: ERC20_ABI,
@@ -37,7 +37,7 @@ export default function CreateAgreement() {
   }
 
   const handleCreate = () => {
-    const amountWei = parseUnits(amount, 6)
+    const amountWei = parseUnits(amount, 18)
     create({
       address: ESCROW_ADDRESS,
       abi: CreatorEscrowABI,
