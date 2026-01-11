@@ -25,9 +25,18 @@ export default function Agreements() {
   const [mentions, setMentions] = useState('@MNEE_cash')
   const [verification, setVerification] = useState<VerificationResult | null>(null)
   const [loading, setLoading] = useState(false)
+  const [proofSubmitted, setProofSubmitted] = useState(false)
 
-  const { writeContract, data: txHash } = useWriteContract()
-  const { isSuccess } = useWaitForTransactionReceipt({ hash: txHash })
+  const { writeContract: submitProofTx, data: proofTxHash } = useWriteContract()
+  const { writeContract: releaseFundsTx, data: releaseTxHash } = useWriteContract()
+  
+  const { isSuccess: proofSuccess } = useWaitForTransactionReceipt({ hash: proofTxHash })
+  const { isSuccess: releaseSuccess } = useWaitForTransactionReceipt({ hash: releaseTxHash })
+
+  // Track proof submission
+  if (proofSuccess && !proofSubmitted) {
+    setProofSubmitted(true)
+  }
 
   // Fetch creator reputation
   const { data: reputation } = useReadContract({
@@ -72,7 +81,7 @@ export default function Agreements() {
 
   const submitProof = () => {
     const proofHash = keccak256(toBytes(JSON.stringify(verification)))
-    writeContract({
+    submitProofTx({
       address: ESCROW_ADDRESS,
       abi: CreatorEscrowABI,
       functionName: 'submitProof',
@@ -81,7 +90,7 @@ export default function Agreements() {
   }
 
   const releaseFunds = () => {
-    writeContract({
+    releaseFundsTx({
       address: ESCROW_ADDRESS,
       abi: CreatorEscrowABI,
       functionName: 'releaseFunds',
@@ -97,12 +106,13 @@ export default function Agreements() {
     )
   }
 
-  if (isSuccess) {
+  if (releaseSuccess) {
     return (
       <div className="text-center py-20">
         <div className="text-6xl mb-4">✅</div>
-        <h2 className="text-2xl font-bold mb-2 text-white">Transaction Successful!</h2>
-        <a href={`https://etherscan.io/tx/${txHash}`} target="_blank" className="text-blue-400 hover:underline">
+        <h2 className="text-2xl font-bold mb-2 text-white">Payment Released!</h2>
+        <p className="text-gray-300 mb-4">MNEE has been sent to the creator</p>
+        <a href={`https://etherscan.io/tx/${releaseTxHash}`} target="_blank" className="text-blue-400 hover:underline">
           View on Etherscan
         </a>
       </div>
@@ -231,27 +241,35 @@ export default function Agreements() {
           </div>
         )}
 
-        {verification?.verified && (
+        {verification?.verified && !proofSubmitted && (
           <>
             <div className="p-3 bg-yellow-900/30 border border-yellow-700/50 rounded-lg">
               <p className="text-yellow-300 text-sm">
-                ⚠️ <strong>Important:</strong> First click "Submit Proof" to record verification on-chain, then click "Release Funds" to complete payment.
+                ⚠️ <strong>Step 1:</strong> Submit proof to record verification on-chain.
               </p>
             </div>
-            <div className="flex gap-4">
-              <button
-                onClick={submitProof}
-                className="flex-1 py-4 bg-blue-600 hover:bg-blue-500 rounded-xl font-semibold text-white"
-              >
-                1. Submit Proof
-              </button>
-              <button
-                onClick={releaseFunds}
-                className="flex-1 py-4 bg-green-600 hover:bg-green-500 rounded-xl font-semibold text-white"
-              >
-                2. Release Funds
-              </button>
+            <button
+              onClick={submitProof}
+              className="w-full py-4 bg-blue-600 hover:bg-blue-500 rounded-xl font-semibold text-white"
+            >
+              Submit Proof On-Chain
+            </button>
+          </>
+        )}
+
+        {verification?.verified && proofSubmitted && (
+          <>
+            <div className="p-3 bg-green-900/30 border border-green-700/50 rounded-lg">
+              <p className="text-green-300 text-sm">
+                ✅ <strong>Proof submitted!</strong> Now release the funds to complete payment.
+              </p>
             </div>
+            <button
+              onClick={releaseFunds}
+              className="w-full py-4 bg-green-600 hover:bg-green-500 rounded-xl font-semibold text-white"
+            >
+              Release Funds
+            </button>
           </>
         )}
       </div>
