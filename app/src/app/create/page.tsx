@@ -14,7 +14,7 @@ export default function CreateAgreement() {
   const [creator, setCreator] = useState('')
   const [amount, setAmount] = useState('')
   const [hashtags, setHashtags] = useState('')
-  const [mentions, setMentions] = useState('')
+  const [mentions, setMentions] = useState('@MNEE_cash')
   const [step, setStep] = useState<'form' | 'approve' | 'create' | 'done'>('form')
 
   const { writeContract: approve, data: approveHash } = useWriteContract()
@@ -112,7 +112,7 @@ export default function CreateAgreement() {
             type="text"
             value={mentions}
             onChange={(e) => setMentions(e.target.value)}
-            placeholder="@MNEE_io"
+            placeholder="@MNEE_cash"
             className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white placeholder-gray-500"
           />
         </div>

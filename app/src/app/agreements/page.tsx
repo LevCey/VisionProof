@@ -22,7 +22,7 @@ export default function Agreements() {
   const [tweetUrl, setTweetUrl] = useState('')
   const [tweetContent, setTweetContent] = useState('')
   const [hashtags, setHashtags] = useState('#MNEE')
-  const [mentions, setMentions] = useState('@MNEE_io')
+  const [mentions, setMentions] = useState('@MNEE_cash')
   const [verification, setVerification] = useState<VerificationResult | null>(null)
   const [loading, setLoading] = useState(false)
 
@@ -232,20 +232,27 @@ export default function Agreements() {
         )}
 
         {verification?.verified && (
-          <div className="flex gap-4">
-            <button
-              onClick={submitProof}
-              className="flex-1 py-4 bg-blue-600 hover:bg-blue-700 rounded-xl font-semibold"
-            >
-              Submit Proof On-Chain
-            </button>
-            <button
-              onClick={releaseFunds}
-              className="flex-1 py-4 bg-green-600 hover:bg-green-700 rounded-xl font-semibold"
-            >
-              Release Funds
-            </button>
-          </div>
+          <>
+            <div className="p-3 bg-yellow-900/30 border border-yellow-700/50 rounded-lg">
+              <p className="text-yellow-300 text-sm">
+                ⚠️ <strong>Important:</strong> First click "Submit Proof" to record verification on-chain, then click "Release Funds" to complete payment.
+              </p>
+            </div>
+            <div className="flex gap-4">
+              <button
+                onClick={submitProof}
+                className="flex-1 py-4 bg-blue-600 hover:bg-blue-500 rounded-xl font-semibold text-white"
+              >
+                1. Submit Proof
+              </button>
+              <button
+                onClick={releaseFunds}
+                className="flex-1 py-4 bg-green-600 hover:bg-green-500 rounded-xl font-semibold text-white"
+              >
+                2. Release Funds
+              </button>
+            </div>
+          </>
         )}
       </div>
     </div>

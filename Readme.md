@@ -64,9 +64,9 @@ MNEE is not just a payment rail — it's **programmable money**:
 - **Frontend:** Next.js 14, TypeScript, Tailwind CSS
 - **Wallet:** wagmi, viem
 - **AI:** Google Gemini 2.5 Flash Lite
-- **Blockchain:** Ethereum Sepolia
+- **Blockchain:** Ethereum Mainnet
 - **Stablecoin:** MNEE (0x8ccedbAe4916b79da7F3F612EfB2EB93A2bFD6cF)
-- **Contract:** 0xeB11F18533775A9B6Dc251E94a4eDe7e5b3d6240
+- **Contract:** 0x056e4680a3d13a454e8cc1ea06b9c7df9e2c5f5a
 
 ## Quickstart
 
@@ -114,11 +114,21 @@ npx hardhat run scripts/deploy.ts --network sepolia
 - Instant Cash (Factoring) - 95% advance on pending payments
 
 ### 📋 Planned (v2.0)
+- **Twitter API integration** - Auto-fetch tweets, verify account ownership
+- **Account verification** - Link X account to wallet address
 - Decentralized oracle network for verification
 - Dispute arbitration with staking
 - SDK for brand integrations
 - Mobile app
 - Multi-chain deployment (Base, Polygon)
+
+## Current Limitations (MVP)
+
+This is a hackathon MVP demonstrating the core concept:
+
+- **Manual tweet input:** Demo uses copy-paste. Production will use Twitter API ($200/mo) for automatic tweet fetching and verification.
+- **No account verification:** Production will verify that the tweet author matches the creator's linked X account.
+- **Single platform:** Currently Twitter/X only. Multi-platform support planned.
 
 ## Team
 
