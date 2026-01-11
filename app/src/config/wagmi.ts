@@ -11,7 +11,7 @@ export const config = createConfig({
   },
 })
 
-export const MNEE_ADDRESS = '0x8ccedbAe4916b79da7F3F612EfB2EB93A2bFB6cF' as const
+export const MNEE_ADDRESS = '0x8ccedbAe4916b79da7F3F612EfB2EB93A2bFD6cF' as const
 
 export const ERC20_ABI = [
   {

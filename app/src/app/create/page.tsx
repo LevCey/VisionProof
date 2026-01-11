@@ -50,7 +50,7 @@ export default function CreateAgreement() {
   if (!isConnected) {
     return (
       <div className="text-center py-20">
-        <p className="text-gray-400">Please connect your wallet to create an agreement</p>
+        <p className="text-gray-300">Please connect your wallet to create an agreement</p>
       </div>
     )
   }
@@ -59,8 +59,8 @@ export default function CreateAgreement() {
     return (
       <div className="text-center py-20">
         <div className="text-6xl mb-4">✅</div>
-        <h2 className="text-2xl font-bold mb-2">Agreement Created!</h2>
-        <p className="text-gray-400 mb-4">MNEE has been locked in escrow</p>
+        <h2 className="text-2xl font-bold mb-2 text-white">Agreement Created!</h2>
+        <p className="text-gray-300 mb-4">MNEE has been locked in escrow</p>
         <a href={`https://etherscan.io/tx/${createHash}`} target="_blank" className="text-blue-400 hover:underline">
           View on Etherscan
         </a>

@@ -92,7 +92,7 @@ export default function Agreements() {
   if (!isConnected) {
     return (
       <div className="text-center py-20">
-        <p className="text-gray-400">Please connect your wallet</p>
+        <p className="text-gray-300">Please connect your wallet</p>
       </div>
     )
   }
@@ -101,7 +101,7 @@ export default function Agreements() {
     return (
       <div className="text-center py-20">
         <div className="text-6xl mb-4">✅</div>
-        <h2 className="text-2xl font-bold mb-2">Transaction Successful!</h2>
+        <h2 className="text-2xl font-bold mb-2 text-white">Transaction Successful!</h2>
         <a href={`https://etherscan.io/tx/${txHash}`} target="_blank" className="text-blue-400 hover:underline">
           View on Etherscan
         </a>
