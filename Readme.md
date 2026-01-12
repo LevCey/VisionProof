@@ -1,6 +1,10 @@
-# AI Payment Agent for Creator Economy
+# VisionProof - AI Payment Agent for Creator Economy
 
 > AI-powered proof-to-pay for trustless creator payments using MNEE stablecoin.
+
+[![Demo Video](https://img.shields.io/badge/Demo-YouTube-red)](https://youtu.be/07b1jN3-qt0)
+[![Live Demo](https://img.shields.io/badge/Live-visionproof.xyz-blue)](https://visionproof.xyz)
+[![Contract](https://img.shields.io/badge/Contract-Etherscan-green)](https://etherscan.io/address/0x056e4680a3d13a454e8cc1ea06b9c7df9e2c5f5a)
 
 ## Problem
 
@@ -34,9 +38,9 @@ MNEE is not just a payment rail — it's **programmable money**:
 
 ## Demo
 
-[Video Link] | [Live Demo]
+🎬 **[Watch Demo Video](https://youtu.be/07b1jN3-qt0)** | 🌐 **[Live Demo](https://visionproof.xyz)**
 
-![Screenshot](./docs/screenshot.png)
+![VisionProof Screenshot](./docs/screenshot.png)
 
 ## Architecture
 
@@ -133,6 +137,13 @@ This is a hackathon MVP demonstrating the core concept:
 ## Team
 
 Built by Levent for MNEE Hackathon 2026
+
+## Links
+
+- 🌐 **Live Demo:** https://visionproof.xyz
+- 🎬 **Video:** https://youtu.be/07b1jN3-qt0
+- 📝 **Contract:** https://etherscan.io/address/0x056e4680a3d13a454e8cc1ea06b9c7df9e2c5f5a
+- 🐦 **Twitter:** https://x.com/MNEE_cash
 
 ## License
 
