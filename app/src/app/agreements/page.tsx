@@ -26,9 +26,10 @@ export default function Agreements() {
   const [verification, setVerification] = useState<VerificationResult | null>(null)
   const [loading, setLoading] = useState(false)
   const [proofSubmitted, setProofSubmitted] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const { writeContract: submitProofTx, data: proofTxHash } = useWriteContract()
-  const { writeContract: releaseFundsTx, data: releaseTxHash } = useWriteContract()
+  const { writeContract: submitProofTx, data: proofTxHash, isPending: proofPending } = useWriteContract()
+  const { writeContract: releaseFundsTx, data: releaseTxHash, isPending: releasePending } = useWriteContract()
   
   const { isSuccess: proofSuccess } = useWaitForTransactionReceipt({ hash: proofTxHash })
   const { isSuccess: releaseSuccess } = useWaitForTransactionReceipt({ hash: releaseTxHash })
@@ -250,9 +251,10 @@ export default function Agreements() {
             </div>
             <button
               onClick={submitProof}
-              className="w-full py-4 bg-blue-600 hover:bg-blue-500 rounded-xl font-semibold text-white"
+              disabled={proofPending}
+              className="w-full py-4 bg-blue-600 hover:bg-blue-500 disabled:bg-gray-600 disabled:cursor-not-allowed rounded-xl font-semibold text-white"
             >
-              Submit Proof On-Chain
+              {proofPending ? 'Confirming...' : 'Submit Proof On-Chain'}
             </button>
           </>
         )}
@@ -266,9 +268,10 @@ export default function Agreements() {
             </div>
             <button
               onClick={releaseFunds}
-              className="w-full py-4 bg-green-600 hover:bg-green-500 rounded-xl font-semibold text-white"
+              disabled={releasePending}
+              className="w-full py-4 bg-green-600 hover:bg-green-500 disabled:bg-gray-600 disabled:cursor-not-allowed rounded-xl font-semibold text-white"
             >
-              Release Funds
+              {releasePending ? 'Confirming...' : 'Release Funds'}
             </button>
           </>
         )}
