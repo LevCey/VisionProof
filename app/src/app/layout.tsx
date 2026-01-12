@@ -7,8 +7,11 @@ import { Header } from "@/components/Header";
 const geist = Geist({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "AI Payment Agent | MNEE Creator Escrow",
+  title: "VisionProof | AI Payment Agent",
   description: "AI-powered proof-to-pay for trustless creator payments using MNEE stablecoin",
+  icons: {
+    icon: "/logo.png",
+  },
 };
 
 export default function RootLayout({
